@@ -3,9 +3,11 @@ package ru.skillbranch.devintensive.utils
 object Utils {
     fun parseFullName(fullName: String?): Pair<String?, String?> {
         val parts: List<String>? = fullName?.split(" ")
-        val firstName = parts?.getOrNull(0)
-        val lastName = parts?.getOrNull(1)
+        var firstName = parts?.getOrNull(0)
+        var lastName = parts?.getOrNull(1)
 
+        if (firstName?.length == 0) firstName = null
+        if (lastName?.length == 0) lastName = null
         return firstName to lastName
     }
 
@@ -13,7 +15,7 @@ object Utils {
         var result = ""
         for (c in payload)
         {
-            val change = when (c.toString()) {
+            val change = when (c.toString().toLowerCase()) {
                 "а" -> "a"
                 "б" -> "b"
                 "в" -> "v"
@@ -58,7 +60,7 @@ object Utils {
     fun toInitials(firstName: String?, lastName: String?): String? {
         val a = firstName?.trim()?.let{it -> if (it.length > 0) it.substring(0, 1) else ""} ?: ""
         val b = lastName?.trim()?.let{it -> if (it.length > 0) it.substring(0, 1) else ""} ?: ""
-        return if (a.isEmpty() && b.isEmpty()) null else a+b
+        return if (a.isEmpty() && b.isEmpty()) null else (a+b).toUpperCase()
     }
     fun declOfNum(number: Int, titles: Array<String>) : String{
         val cases = arrayOf(2, 0, 1, 1, 1, 2)
