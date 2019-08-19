@@ -14,6 +14,7 @@ fun String.truncate(limit: Int = 16) : String{
 fun String.stripHtml() : String {
     var s = this
     s = s.replace(Regex("<[^>]+>"), "")
+    s = s.replace(Regex("&[^;]+;"), "")
     s = s.replace(Regex(" {2,}"), " ")
     return s
 }
