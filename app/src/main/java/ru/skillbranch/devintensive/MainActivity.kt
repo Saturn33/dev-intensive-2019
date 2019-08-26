@@ -12,6 +12,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.skillbranch.devintensive.extensions.hideKeyboard
+import ru.skillbranch.devintensive.extensions.isKeyboardClosed
+import ru.skillbranch.devintensive.extensions.isKeyboardOpen
 import ru.skillbranch.devintensive.models.Bender
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
@@ -95,6 +97,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
     
     override fun onClick(v: View?) {
+        Log.d("M_MainActivity", "isKeyboardOpen = ${this.isKeyboardOpen()}")
+        Log.d("M_MainActivity", "isKeyboardClosed = ${this.isKeyboardClosed()}")
         when (v?.id) {
             R.id.iv_send, R.id.et_message -> {
                 this.hideKeyboard()
