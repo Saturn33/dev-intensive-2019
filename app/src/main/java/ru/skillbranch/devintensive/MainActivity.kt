@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -43,6 +44,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         textTxt.text = benderObj.askQuestion()
         sendBtn.setOnClickListener(this)
+        et_message.setOnEditorActionListener { textView, i, keyEvent ->
+            when (i) {
+                EditorInfo.IME_ACTION_DONE -> {
+                    onClick(textView)
+                    this.hideKeyboard()
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     override fun onRestart() {
@@ -84,16 +95,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
     
     override fun onClick(v: View?) {
-        if (v?.id == R.id.iv_send) {
-            this.hideKeyboard()
-            val answer = messageEt.text.toString()
-            if (answer.isEmpty()) return
-            val (phrase, color) = benderObj.listenAnswer(answer)
-            messageEt.setText("")
-            val (r,g,b) = color
-            benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
-            textTxt.text = phrase
-
+        when (v?.id) {
+            R.id.iv_send, R.id.et_message -> {
+                this.hideKeyboard()
+                val answer = messageEt.text.toString()
+                if (answer.isEmpty()) return
+                val (phrase, color) = benderObj.listenAnswer(answer)
+                messageEt.setText("")
+                val (r, g, b) = color
+                benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
+                textTxt.text = phrase
+            }
         }
     }
 

@@ -35,6 +35,8 @@
 
         <EditText
                 android:id="@+id/et_message"
+                android:imeOptions="actionDone"
+                android:singleLine="true"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/spacing_normal_16"
