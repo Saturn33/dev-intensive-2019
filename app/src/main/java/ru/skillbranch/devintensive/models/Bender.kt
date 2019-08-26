@@ -61,7 +61,7 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
         },
         PROFESSION("Назови мою профессию?", listOf("сгибальщик", "bender")) {
             override fun isValid(inp: String): Pair<Boolean, String> {
-                return if (inp.first().isUpperCase()) true to ""
+                return if (inp.first().isLowerCase()) true to ""
                 else false to "Профессия должна начинаться со строчной буквы"
             }
 
