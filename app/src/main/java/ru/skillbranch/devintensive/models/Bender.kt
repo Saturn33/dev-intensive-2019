@@ -13,20 +13,22 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
         Question.IDLE -> Question.IDLE.question
     }
 
-    fun listenAnswer(answer: String) : Pair<String, Triple<Int, Int, Int>> {
-        return if (question.answers.contains(answer)) {
-            question = question.nextQuestion()
-            "Отлично - ты справился\n${question.question}" to status.color
-        }
-        else
-        {
-            status = status.nextStatus()
-            if (status == Status.NORMAL) {
-                question = Question.NAME
-                "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color
+    fun listenAnswer(answer: String): Pair<String, Triple<Int, Int, Int>> {
+        val (valid, invalidMessage) = question.isValid(answer)
+        return if (!valid) {
+            "${invalidMessage}\n${question.question}" to status.color
+        } else {
+            if (question.answers.contains(answer.toLowerCase())) {
+                question = question.nextQuestion()
+                "Отлично - ты справился\n${question.question}" to status.color
+            } else {
+                status = status.nextStatus()
+                if (status == Status.NORMAL) {
+                    question = Question.NAME
+                    "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color
+                } else
+                    "Это неправильный ответ\n${question.question}" to status.color
             }
-            else
-                "Это неправильный ответ\n${question.question}" to status.color
         }
     }
 
@@ -51,24 +53,50 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
 
     enum class Question(val question: String, val answers: List<String>) {
         NAME("Как меня зовут?", listOf("бендер", "bender")) {
+            override fun isValid(inp: String): Pair<Boolean, String> {
+                return if (inp.first().isUpperCase()) true to ""
+                else false to "Имя должно начинаться с заглавной буквы"
+            }
             override fun nextQuestion(): Question = PROFESSION
         },
         PROFESSION("Назови мою профессию?", listOf("сгибальщик", "bender")) {
+            override fun isValid(inp: String): Pair<Boolean, String> {
+                return if (inp.first().isUpperCase()) true to ""
+                else false to "Профессия должна начинаться со строчной буквы"
+            }
+
             override fun nextQuestion(): Question = MATERIAL
         },
         MATERIAL("Из чего я сделан?", listOf("металл", "дерево", "metal", "iron", "wood")) {
+            override fun isValid(inp: String): Pair<Boolean, String> {
+                return if (!inp.contains(Regex("\\d"))) true to ""
+                else false to "Материал не должен содержать цифр"
+            }
+
             override fun nextQuestion(): Question = BDAY
         },
         BDAY("Когда меня создали?", listOf("2993")) {
+            override fun isValid(inp: String): Pair<Boolean, String> {
+                return if (inp.matches(Regex("\\d+"))) true to ""
+                else false to "Год моего рождения должен содержать только цифры"
+            }
+
             override fun nextQuestion(): Question = SERIAL
         },
         SERIAL("Мой серийный номер?", listOf("2716057")) {
+            override fun isValid(inp: String): Pair<Boolean, String> {
+                return if (inp.matches(Regex("\\d{7}"))) true to ""
+                else false to "Серийный номер содержит только цифры, и их 7"
+            }
+
             override fun nextQuestion(): Question = IDLE
         },
         IDLE("На этом все, вопросов больше нет", listOf()) {
+            override fun isValid(inp: String): Pair<Boolean, String> = true to ""
             override fun nextQuestion(): Question = IDLE
         };
 
         abstract fun nextQuestion():Question
+        abstract fun isValid(inp: String): Pair<Boolean, String>
     }
 }
