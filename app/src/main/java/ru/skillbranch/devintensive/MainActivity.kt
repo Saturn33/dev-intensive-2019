@@ -97,8 +97,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
     
     override fun onClick(v: View?) {
-        Log.d("M_MainActivity", "isKeyboardOpen = ${this.isKeyboardOpen()}")
-        Log.d("M_MainActivity", "isKeyboardClosed = ${this.isKeyboardClosed()}")
         when (v?.id) {
             R.id.iv_send, R.id.et_message -> {
                 this.hideKeyboard()

@@ -17,8 +17,6 @@ fun Activity.isKeyboardOpen(): Boolean {
     val rootView = window.decorView.findViewById<View>(android.R.id.content)
     val rect = Rect()
     rootView.getWindowVisibleDisplayFrame(rect)
-    Log.d("M_Activity", "rect height ${rect.height()}")
-    Log.d("M_Activity", "rootView height ${rootView.rootView.height}")
     return (rootView.rootView.height - rect.height() > 500)
 }
 
