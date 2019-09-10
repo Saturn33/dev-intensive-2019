@@ -1,5 +1,9 @@
 package ru.skillbranch.devintensive.utils
 
+import android.content.Context
+import android.content.res.Resources
+import kotlin.math.roundToInt
+
 object Utils {
     fun parseFullName(fullName: String?): Pair<String?, String?> {
         val parts: List<String>? = fullName?.split(" ")
@@ -66,4 +70,7 @@ object Utils {
         val cases = arrayOf(2, 0, 1, 1, 1, 2)
         return titles[ if (number%100>4 && number%100<20) 2 else cases[if(number%10<5) number%10 else 5] ]
     }
+
+    fun convertDpToPx(dp : Float) = (dp * Resources.getSystem().displayMetrics.density).toInt()
+    fun convertPxToDp(px : Int) = (px / Resources.getSystem().displayMetrics.density).toInt()
 }
