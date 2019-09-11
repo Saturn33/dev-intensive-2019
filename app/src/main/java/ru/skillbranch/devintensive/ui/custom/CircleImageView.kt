@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.widget.ImageView
 import androidx.annotation.ColorRes
 import androidx.annotation.Dimension
@@ -56,9 +57,39 @@ class CircleImageView @JvmOverloads constructor(
         invalidate()
     }
 
-    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
-        super.onLayout(changed, left, top, right, bottom)
+    fun setInitials(initials: String?) {
+        if (initials == null)
+            setImageResource(R.drawable.avatar_default)
+        else
+            setImageBitmap(getTextAvatar(initials))
     }
+
+    private fun getTextAvatar(initials: String): Bitmap? {
+        val color = TypedValue()
+        context.theme.resolveAttribute(R.attr.colorAccent, color, true)
+
+        val bitmap: Bitmap = Bitmap.createBitmap(
+            layoutParams.width,
+            layoutParams.height,
+            Bitmap.Config.ARGB_8888
+        )
+
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        paint.textSize = layoutParams.height / 2f
+        paint.color = Color.WHITE
+        paint.textAlign = Paint.Align.CENTER
+
+        val canvas = Canvas(bitmap)
+        canvas.drawColor(color.data)
+
+        val textBounds = Rect()
+        paint.getTextBounds(initials, 0, initials.length, textBounds)
+
+        canvas.drawText(initials, layoutParams.width / 2f, layoutParams.height / 2f + textBounds.height() / 2f, paint)
+
+        return bitmap
+    }
+
 
     override fun onDraw(canvas: Canvas) {
         var bitmap = getBitmapFromDrawable() ?: return
@@ -72,15 +103,15 @@ class CircleImageView @JvmOverloads constructor(
     }
 
     private fun getBitmapFromDrawable(): Bitmap? {
-        if (drawable != null) {
+        return if (drawable != null) {
             if (drawable is BitmapDrawable)
-                return (drawable as BitmapDrawable).bitmap
-            else return drawable.toBitmap(
+                (drawable as BitmapDrawable).bitmap
+            else drawable.toBitmap(
                 drawable.intrinsicWidth,
                 drawable.intrinsicHeight,
                 Bitmap.Config.ARGB_8888
             )
-        } else return null
+        } else null
     }
 
     private fun getScaledBitmap(bitmap: Bitmap, size: Int): Bitmap {
@@ -100,16 +131,10 @@ class CircleImageView @JvmOverloads constructor(
         val newWidth = (bitmap.width) / 2
         val newHeight = (bitmap.height) / 2
 
-        if (bitmap.height >= bitmap.width) {
-            return Bitmap.createBitmap(bitmap, 0, newHeight - newWidth, bitmap.width, bitmap.width)
+        return if (bitmap.height >= bitmap.width) {
+            Bitmap.createBitmap(bitmap, 0, newHeight - newWidth, bitmap.width, bitmap.width)
         } else {
-            return Bitmap.createBitmap(
-                bitmap,
-                newWidth - newHeight,
-                0,
-                bitmap.height,
-                bitmap.height
-            )
+            Bitmap.createBitmap(bitmap, newWidth - newHeight, 0, bitmap.height, bitmap.height)
         }
     }
 

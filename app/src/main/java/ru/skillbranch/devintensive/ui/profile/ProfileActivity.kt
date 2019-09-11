@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.activity_profile.*
 import ru.skillbranch.devintensive.R
 import ru.skillbranch.devintensive.models.Profile
+import ru.skillbranch.devintensive.utils.Utils
 import ru.skillbranch.devintensive.viewmodels.ProfileViewModel
 
 class ProfileActivity : AppCompatActivity() {
@@ -23,12 +24,13 @@ class ProfileActivity : AppCompatActivity() {
         const val IS_EDIT_MODE = "IS_EDIT_MODE"
     }
 
+    private var isAvatarGenerated = false
     private lateinit var viewModel: ProfileViewModel
     var isEditMode = false
     lateinit var viewFields: Map<String, TextView>
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        //TODO set theme here
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
         initViews(savedInstanceState)
@@ -95,6 +97,8 @@ class ProfileActivity : AppCompatActivity() {
                 v.text = it[k].toString()
             }
         }
+        if (!isAvatarGenerated)
+            iv_avatar.setInitials(Utils.toInitials(profile.firstName, profile.lastName))
     }
 
     private fun updateRepository(isError: Boolean) {
