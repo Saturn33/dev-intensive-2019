@@ -13,7 +13,7 @@ import ru.skillbranch.devintensive.R
 import ru.skillbranch.devintensive.utils.Utils
 import kotlin.math.min
 
-class CircleImageView @JvmOverloads constructor(
+open class CircleImageView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -35,6 +35,7 @@ class CircleImageView @JvmOverloads constructor(
                 a.getDimensionPixelSize(R.styleable.CircleImageView_cv_borderWidth, borderWidth)
             a.recycle()
         }
+//        setInitials("??")
     }
 
     @Dimension
