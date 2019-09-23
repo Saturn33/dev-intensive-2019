@@ -16,13 +16,13 @@ data class Chat(
     var isArchived: Boolean = false
 ) {
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    private fun unreadableMessageCount(): Int = messages.count { !it.isReaded }
+    fun unreadableMessageCount(): Int = messages.count { !it.isReaded }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    private fun lastMessageDate(): Date? = if (messages.isEmpty()) null else messages.last().date
+    fun lastMessageDate(): Date? = if (messages.isEmpty()) null else messages.last().date
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    private fun lastMessageShort(): Pair<String, String>{
+    fun lastMessageShort(): Pair<String, String>{
         if (messages.isEmpty())
             return "Сообщений ещё нет" to ""
         else
