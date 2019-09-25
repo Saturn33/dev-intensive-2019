@@ -186,7 +186,7 @@ class ChatAdapter(val listener: (ChatItem) -> Unit) :
 
             with(tv_message_author_archive){
                 visibility = if (item.lastMessageDate != null) View.VISIBLE else View.GONE
-                text = item.author
+                text = "@${item.author}"
             }
 
             itemView.setOnClickListener {
