@@ -10,12 +10,13 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.skillbranch.devintensive.R
+import ru.skillbranch.devintensive.models.data.ChatType
 import ru.skillbranch.devintensive.ui.adapters.ChatAdapter
 import ru.skillbranch.devintensive.ui.adapters.ChatItemTouchHelperCallback
+import ru.skillbranch.devintensive.ui.archive.ArchiveActivity
 import ru.skillbranch.devintensive.ui.group.GroupActivity
 import ru.skillbranch.devintensive.viewmodels.MainViewModel
 
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.menu_search, menu)
         val searchItem = menu?.findItem(R.id.action_search)
         val searchView = searchItem?.actionView as SearchView
-        searchView.queryHint = "Введите имя пользователя"
+        searchView.queryHint = "Введите название чата"
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 viewModel.handleSearchQuery(query)
@@ -60,11 +61,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun initViews() {
         chatAdapter = ChatAdapter {
-            Snackbar.make(rv_chat_list, "Click on ${it.title}", Snackbar.LENGTH_LONG).show()
+            if (it.chatType == ChatType.ARCHIVE) {
+                Intent(this, ArchiveActivity::class.java).also { intent -> startActivity(intent) }
+            } else {
+                Snackbar.make(rv_chat_list, "Click on ${it.title}", Snackbar.LENGTH_LONG).show()
+            }
         }
 
         val divider = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
-        val touchCallback = ChatItemTouchHelperCallback(chatAdapter) { chatItem ->
+        val touchCallback = ChatItemTouchHelperCallback(resources.getDrawable(R.drawable.ic_archive_black_24dp, theme), chatAdapter) { chatItem ->
             viewModel.addToArchive(chatItem.id)
             Snackbar.make(rv_chat_list, "Вы точно хотите добавить ${chatItem.title} в архив?", Snackbar.LENGTH_LONG)
                 .setAction(R.string.undo) { viewModel.restoreFromArchive(chatItem.id) }
@@ -80,8 +85,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         fab.setOnClickListener {
-           val intent = Intent(this, GroupActivity::class.java)
-            startActivity(intent)
+            Intent(this, GroupActivity::class.java).also { intent -> startActivity(intent) }
         }
     }
 
