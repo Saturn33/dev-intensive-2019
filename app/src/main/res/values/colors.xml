@@ -14,5 +14,11 @@
     <color name="color_divider_dark">#1F000000</color>
     <color name="color_indicator">#581F99</color>
     <color name="color_green">#4FD149</color>
+    <color name="color_holder_bg">#ffffff</color>
+    <color name="color_header_bg">@color/color_primary</color>
+    <color name="color_snack_text">#ffffff</color>
+    <color name="color_user_tick">@color/color_primary</color>
+    <color name="color_chip_oval">#ffffff</color>
+
 
 </resources>

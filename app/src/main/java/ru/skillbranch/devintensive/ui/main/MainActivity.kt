@@ -13,12 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.skillbranch.devintensive.R
+import ru.skillbranch.devintensive.extensions.setTextColor
 import ru.skillbranch.devintensive.models.data.ChatType
 import ru.skillbranch.devintensive.ui.adapters.ChatAdapter
 import ru.skillbranch.devintensive.ui.adapters.ChatItemTouchHelperCallback
 import ru.skillbranch.devintensive.ui.archive.ArchiveActivity
 import ru.skillbranch.devintensive.ui.group.GroupActivity
 import ru.skillbranch.devintensive.viewmodels.MainViewModel
+//import ru.skillbranch.devintensive.viewmodels.ProfileViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -52,6 +54,17 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+
+/*
+        menuInflater.inflate(R.menu.menu_mode, menu)
+        val modeItem = menu?.findItem(R.id.action_mode)
+        modeItem.setOnMenuItemClickListener {
+            ProfileViewModel().switchTheme()
+            Toast.makeText(this, "Clicked menu, current theme: ${ProfileViewModel().getTheme().value}", Toast.LENGTH_SHORT).show()
+            true
+        }
+*/
+
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -71,7 +84,10 @@ class MainActivity : AppCompatActivity() {
         val divider = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
         val touchCallback = ChatItemTouchHelperCallback(resources.getDrawable(R.drawable.ic_archive_black_24dp, theme), chatAdapter) { chatItem ->
             viewModel.addToArchive(chatItem.id)
-            Snackbar.make(rv_chat_list, "Вы точно хотите добавить ${chatItem.title} в архив?", Snackbar.LENGTH_LONG)
+            Snackbar.make(rv_chat_list, "Вы точно хотите добавить ${chatItem.title} в архив?", Snackbar.LENGTH_LONG).apply {
+                view.setBackgroundColor(resources.getColor(R.color.color_primary, theme))
+            }
+                .setTextColor(resources.getColor(R.color.color_snack_text, theme))
                 .setAction(R.string.undo) { viewModel.restoreFromArchive(chatItem.id) }
                 .show()
         }

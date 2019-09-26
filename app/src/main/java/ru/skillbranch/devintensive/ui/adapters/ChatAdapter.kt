@@ -17,6 +17,7 @@ import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_chat_archive.*
 import kotlinx.android.synthetic.main.item_chat_group.*
 import kotlinx.android.synthetic.main.item_chat_single.*
+import ru.skillbranch.devintensive.App
 import ru.skillbranch.devintensive.R
 import ru.skillbranch.devintensive.models.data.ChatItem
 import ru.skillbranch.devintensive.models.data.ChatType
@@ -92,7 +93,7 @@ class ChatAdapter(val listener: (ChatItem) -> Unit) :
         }
 
         override fun onItemCleared() {
-            itemView.setBackgroundColor(Color.WHITE)
+            itemView.setBackgroundColor(itemView.resources.getColor(R.color.color_holder_bg, App.applicationContext().theme))
         }
 
         override fun bind(item: ChatItem, listener: (ChatItem) -> Unit) {
@@ -138,7 +139,7 @@ class ChatAdapter(val listener: (ChatItem) -> Unit) :
         }
 
         override fun onItemCleared() {
-            itemView.setBackgroundColor(Color.WHITE)
+            itemView.setBackgroundColor(itemView.resources.getColor(R.color.color_holder_bg, App.applicationContext().theme))
         }
 
         override fun bind(item: ChatItem, listener: (ChatItem) -> Unit) {

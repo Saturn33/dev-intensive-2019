@@ -9,4 +9,5 @@
     <string name="menu_search_title">Поиск</string>
     <string name="undo">Отменить</string>
     <string name="archive_title">Архив чатов</string>
+    <string name="menu_mode">Режим</string>
 </resources>

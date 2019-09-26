@@ -9,7 +9,9 @@
     <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:theme="@style/AppTheme.AppBarOverlay"
+            android:background="@color/color_header_bg"
+            >
 
         <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -33,6 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/spacing_normal_16"
-            android:src="@drawable/ic_add_black_24dp" />
+            android:src="@drawable/ic_add_black_24dp"
+            />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -4,12 +4,16 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.group.GroupActivity">
+        tools:context=".ui.group.GroupActivity"
+        android:background="@color/color_snack_text"
+        >
 
     <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:theme="@style/AppTheme.AppBarOverlay"
+            android:background="@color/color_header_bg"
+            >
 
         <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"

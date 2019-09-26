@@ -4,7 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_size"
-        android:background="@android:color/white"
+        android:background="@color/color_holder_bg"
         android:padding="@dimen/spacing_normal_16">
 
     <ru.skillbranch.devintensive.ui.custom.AvatarImageView
@@ -12,8 +12,8 @@
             android:layout_width="@dimen/avatar_image_size"
             android:layout_height="@dimen/avatar_image_size"
             android:layout_alignParentStart="true"
-            app:aiv_borderColor="@color/color_accent"
-            app:aiv_borderWidth="3dp"
+            app:cv_borderColor="@color/color_accent"
+            app:cv_borderWidth="0dp"
             tools:src="@drawable/avatar_default" />
 
     <View
