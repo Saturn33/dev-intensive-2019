@@ -2,17 +2,21 @@ package ru.skillbranch.devintensive.ui.group
 
 import android.content.res.ColorStateList
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.children
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.activity_group.*
 import ru.skillbranch.devintensive.R
@@ -103,7 +107,29 @@ class GroupActivity : AppCompatActivity() {
     private fun addChipToGroup(user: UserItem) {
         val chip = Chip(this).apply {
             text = user.fullName
-            chipIcon = resources.getDrawable(R.drawable.avatar_default, theme)
+            if (user.avatar == null) {
+                chipIcon = resources.getDrawable(R.drawable.avatar_default, theme)
+            }
+            else
+            {
+                Glide.with(this)
+                    .load(user.avatar)
+                    .circleCrop()
+                    .into(object :CustomTarget<Drawable>(){
+                        override fun onLoadCleared(placeholder: Drawable?) {
+                            chipIcon = resources.getDrawable(R.drawable.avatar_default, theme)
+                        }
+
+                        override fun onResourceReady(
+                            resource: Drawable,
+                            transition: Transition<in Drawable>?
+                        ) {
+                            chipIcon = resource
+                        }
+
+                    })
+            }
+
             isCloseIconVisible = true
             tag = user.id
             isClickable = true
